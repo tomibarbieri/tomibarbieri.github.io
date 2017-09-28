@@ -9,7 +9,7 @@ angular
     }, {
       label: 'Inicio',
       iconClasses: 'glyphicon glyphicon-home',
-      url: '#/index'
+      url: './#/index'
     }, {
       label: 'Componentes',
       iconClasses: 'glyphicon glyphicon-th-large',
