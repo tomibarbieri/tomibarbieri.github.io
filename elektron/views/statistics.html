@@ -1,79 +1,253 @@
 <div id="page-heading">
-    <ol class="breadcrumb">
-        <li><a href="#/">Inicio</a></li>
-        <li class="active">Estadisticas</li>
-    </ol>
+	<ol class="breadcrumb">
+		<li><a href="#/">Dashboard</a></li>
+		<li class="active">Estadísticas</li>
+	</ol>
 
-    <h1>Estadísticas</h1>
+	<h1>Estadísticas del sistema</h1>
 </div>
-
 
 <div class="container-fluid" ng-controller="StatisticsController">
 
-    <div class="row">
-        <div class="col-md-8 animated-content">
-            <panel panel-class="panel-default no-padding" heading="Elegir componente">
-                <panel-controls>
-                    <panel-control-collapse></panel-control-collapse>
-                    <panel-control-title></panel-control-title>
-                    <panel-control-colors></panel-control-colors>
-                    <panel-control-refresh type="circular" is-loading="loadingChartData" ng-click="refreshAction()"></panel-control-refresh>
-                    <div class="pull-right mr10 hidden-xs">
-                        <button class="btn btn-sm btn-default" style="text-transform: uppercase;" daterangepicker="drp_options" date-begin="drp_start" date-end="drp_end">
-                            <i class="glyphicon glyphicon-calendar"></i> <span style="margin-left: 5px">{{drp_start}} - {{drp_end}}</span> <b class="caret"></b>
-                        </button>
-                    </div>
-                </panel-controls>
+	<div class="row">
 
-                <div class="p20">
-                    <div class="row">
-                        <div class="col-md-12">
-                           <div class="" flot-chart style="width: 100%; height:319px"
-                                data-flot-data="plotStatsData"
-                                data-flot-options="plotStatsOptions"
-                            ></div>
-                        </div>
+		<div class="col-md-12">
+
+			<panel panel-class="panel-primary" data-heading="Detalles de componentes">
+				  <panel-controls>
+  					<panel-control-collapse></panel-control-collapse>
+				  </panel-controls>
+          <div class="spinner-container" ng-show="spinnerstatistics == true">
+            <div class="loader-spinner"></div>
+          </div>
+					<div ng-show="statisticserror == true" class="error-container">
+						<span>Error de conexion en el servidor </span>
+						<button ng-click="reloadpage()" class="error-button btn btn-sm btn-default">
+							<span class="glyphicon glyphicon-refresh"></span>
+						</button>
+					</div>
+				  <table ng-show="(spinnerstatistics == false) && (statisticserror == false)" class="table table-bordered table-condensed">
+					<tr style="font-weight: bold">
+						<td style="width:10%">Nombre</td>
+						<td style="width:3%">Estado</td>
+            <td style="width:10%">Consumo total</td>
+            <td style="width:8%">Costo aproximado</td>
+            <td style="width:6%">Co2 producido</td>
+						<td style="width:8%">Última medicion (último valor)</td>
+            <td style="width:8%">Período actividad</td>
+            <td style="width:8%">Consumo Período actual</td>
+            <td style="width:8%">Nº encendidos y apagados</td>
+					</tr>
+          <tr ng-repeat="component in components_statistics">
+					  <td>
+						<!-- editable username (text with validation) -->
+						<span editable-text="component.device.label" e-name="name" e-form="rowform" e-required>
+						  {{ component.device.label }}
+						</span>
+					  </td>
+					  <td>
+						<!-- editable status (select-local) -->
+						<span e-name="ip" e-form="rowform" e-required>
+              <div style="margin-left:3px;" ng-switch on="component.device.devicestate.name">
+                  <button ng-switch-when="off" class="btn btn-sm btn-danger" ng-click=""></button>
+                  <button ng-switch-when="on" class="btn btn-sm btn-success" ng-click=""></button>
+              </div>
+						</span>
+					  </td>
+            <td>
+						<!-- editable status (select-local) -->
+						<span e-form="rowform" e-required>
+						  {{component.device_data_sum/1000 | number:0 }} kw ({{ component.device_percent || 0 | number:1 }}%)
+						</span>
+					  </td>
+
+            <td>
+						<!-- editable status (select-local) -->
+						<span e-form="rowform" e-required>
+						  $ {{component.device_tarifa | number:0 }}
+						</span>
+					  </td>
+            <td>
+						<!-- editable status (select-local) -->
+						<span e-form="rowform" e-required>
+						  {{ component.device_co2 | number:0 }} Kg
+						</span>
+					  </td>
+					  <td>
+						<!-- editable group (select-remote) -->
+						<span e-name="last" e-form="rowform" e-required>
+              {{ component.last_data.date | date:'dd/MM/yyyy HH:mm' }} ({{ component.last_data.value || 0 }}w)
+						</span>
+					  </td>
+
+            <td>
+						<!-- editable group (select-remote) -->
+						<span e-name="last" e-form="rowform" e-required>
+              Último período: desde {{ component.state_period_from | date:'dd/MM/yyyy HH:mm' }} hasta {{ component.state_period_to | date:'dd/MM/yyyy HH:mm' }}
+						</span>
+					  </td>
+
+            <td>
+						<!-- editable group (select-remote) -->
+						<span e-name="last" e-form="rowform" e-required>
+              {{ component.data_list_sum_states/1000 || 0 | number:0 }} Kw
+						</span>
+					  </td>
+
+            <td>
+						<!-- editable status (select-local) -->
+						<span e-name="ip" e-form="rowform" e-required>
+              <div style="margin-left:3px;" ng-switch on="component.device.devicestate.name">
+                  <button class="btn btn-sm btn-danger" ng-click="">{{component.device.state_counter_off}}</button>
+                  <button class="btn btn-sm btn-success" ng-click="">{{component.device.state_counter_on}}</button>
+              </div>
+						</span>
+					  </td>
+
+					</tr>
+        </table>
+				  <!--<button class="btn btn-default" ng-click="addComponent()">Agregar componente</button>-->
+			</panel>
+		</div>
+
+    <div class="col-md-6">
+
+        <panel panel-class="panel-default no-padding" heading="Porcentaje de consumo">
+            <panel-controls>
+                <panel-control-collapse></panel-control-collapse>
+            </panel-controls>
+
+            <div class="p20">
+                <div class="row">
+                  <div class="spinner-container" ng-show="spinnerdoughnout == true">
+                    <div class="loader-spinner"></div>
+                  </div>
+									<div ng-show="statisticserror == true" class="error-container">
+										<span>Error de conexion en el servidor </span>
+										<button ng-click="reloadpage()" class="error-button btn btn-sm btn-default">
+											<span class="glyphicon glyphicon-refresh"></span>
+										</button>
+									</div>
+                  <canvas ng-show="(spinnerdoughnout == false) && (statisticserror == false)" id="doughnut" height="150" class="chart chart-doughnut"
+                    chart-data="doughnutdata" chart-labels="doughnutlabels">
+                  </canvas>
+                  <div ng-show="spinnerdoughnout == false" style="margin-top:10px;">
+                    <div ng-repeat="value in doughnut.config.data.labels" style="margin:5px;float:left;">
+                      <span class="badge" style="background-color:{{doughnut.config.data.datasets[0].backgroundColor[$index]}};">
+                        {{ value }}
+                      </span>
                     </div>
-                </div>
-            </panel>
-        </div>
-        <div class="col-md-4 animated-content">
-            <div class="row">
-                <div class="col-xs-6">
-                    <tile-simple data="{ title: 'Componentes activos', href: '#/ui-tiles',text: '8', color: 'danger'}"></tile-simple>
-                </div>
-                <div class="col-xs-6">
-                    <tile-simple data="{ title: 'Consumo total', href: '#/ui-tiles',text: '441', color: 'indigo'}"></tile-simple>
+                  </div>
+
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <tile-simple data="{ title: 'Costo aproximado', href: '#/ui-tiles',text: '$1,138', color: 'success'}"></tile-simple>
-                </div>
-                <div class="col-xs-6">
-                    <tile-simple data="{ title: 'Componentes totales', href: '#/ui-tiles',text: '27', color: 'midnightblue'}"></tile-simple>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <tile type="default" heading="Limite gasto">
-                        <div easypiechart class="easypiechart"
-                            data-percent="55"
-                            data-options="epDiskSpace"><span class="percent">55</span>
-                        </div>
-                    </tile>
-                </div>
-                <div class="col-md-6" ng-drop="true">
-                    <tile type="default" heading="Parcial consumo" ng-drag="true">
-                        <div easypiechart class="easypiechart"
-                            data-percent="23"
-                            data-options="epBandwidth"><span class="percent">23</span>
-                        </div>
-                    </tile>
+        </panel>
+    </div>
+    <div class="col-md-6">
+
+        <panel panel-class="panel-default no-padding" heading="Tabla">
+            <panel-controls>
+                <panel-control-collapse></panel-control-collapse>
+
+                <div ng-show="barerror == false" class="btn-group" dropdown>
+                  <button type="button" class="btn btn-sm btn-info">{{currentBarLeft.label || 'Componente 1'}}</button>
+									<button ng-show="(loadingbarc1 == true) && (barerror == false)" class="button-spinner btn btn-sm btn-info">
+										<div class="loader-spinner-small"></div>
+									</button>
+                  <button ng-show="(loadingbarc1 == false)" type="button" class="button-refresh btn btn-sm btn-info dropdown-toggle" dropdown-toggle>
+                    <i class="caret"></i>
+                  </button>
+                  <ul class="dropdown-menu pull-right">
+                    <li>
+                      <a ng-repeat="component in components_server" ng-click="changeLeftBarComponent(component)">{{ component.label }}</a>
+                    </li>
+                  </ul>
                 </div>
 
+                <div ng-show="barerror == false" class="btn-group" dropdown>
+
+                  <button type="button" class="btn btn-sm btn-info">{{currentBarRigth.label || 'Componente 2' }}</button>
+									<button ng-show="(loadingbarc2 == true) && (barerror == false)" class="button-spinner btn btn-sm btn-info">
+										<div class="loader-spinner-small"></div>
+									</button>
+									<button ng-show="(loadingbarc2 == false)" type="button" class="button-refresh btn btn-sm btn-info dropdown-toggle" dropdown-toggle>
+                    <i class="caret"></i>
+                  </button>
+                  <ul class="dropdown-menu pull-right">
+                    <li>
+                      <a ng-repeat="component in components_server" ng-click="changeRigthBarComponent(component)">{{ component.label }}</a>
+                    </li>
+                  </ul>
+                </div>
+
+								<div ng-show="barerror == false" class="btn-group" dropdown>
+									<button type="button" class="btn btn-sm btn-info">{{ currentPrecision.label || 'Precision'}}</button>
+									<button type="button" class="button-refresh btn btn-sm btn-info dropdown-toggle" dropdown-toggle>
+										<i class="caret"></i>
+									</button>
+									<ul class="dropdown-menu pull-right">
+										<li>
+											<a ng-repeat="precision in barPrecision" ng-click="changeCriteria(precision)">{{precision.label}}</a>
+										</li>
+									</ul>
+								</div>
+
+								<button ng-show="barerror == false" ng-disabled="(currentBarLeft == undefined) || (currentBarRigth == undefined) || (currentPrecision == undefined)" ng-click="changeBarChart()" class="button-refresh btn btn-sm btn-info"><i class="glyphicon glyphicon-refresh"></i></button>
+
+            </panel-controls>
+
+            <div class="p20">
+                <div class="row">
+                  <div class="spinner-container" ng-show="(spinnerbar == true) && (barerror == false)">
+                    <div class="loader-spinner"></div>
+                  </div>
+									<div ng-show="(spinnerbar == false) && (barerror == true) && (nocomponentsselected == false)" class="error-container">
+										<span>Error de conexion en el servidor </span>
+										<button ng-click="reloadpage()" class="error-button btn btn-sm btn-default">
+											<span class="glyphicon glyphicon-refresh"></span>
+										</button>
+									</div>
+									<div ng-show="(spinnerbar == false) && (nocomponentsselected == true) && (barerror == false)" class="tabla-comparativa-container">
+										<span>Elegir los componentes y la precisión</span>
+										<span class="glyphicon glyphicon-circle-arrow-up"></span>
+									</div>
+                  <canvas ng-show="(spinnerbar == false) && (barerror == false) && (nocomponentsselected == false)" id="bar" class="chart chart-bar"
+                    chart-data="bardata" chart-labels="barlabels" chart-series="barseries">
+                  </canvas>
+                </div>
             </div>
-        </div>
+            <panel-footer ng-show="(nocomponentsselected == false) && (spinnerbar == false) && (barerror == false)">
+              <div class="footer-bar">
+                <button ng-disabled="lastbutton" ng-disabled="previousPageDisable" ng-click="loadPage('last')" class="btn btn-sm btn-info">
+                  Final
+                </button>
+                <button ng-disabled="previousbutton" ng-disabled="previousPageDisable" ng-click="loadPage(current_page + 1)" class="btn btn-sm btn-info">
+                  5 anteriores
+                </button>
+                <div class="btn-group" dropdown>
+                  <button ng-disabled="(number_pages.length <= 1)" type="button" class="btn btn-sm btn-info">{{ current_page || 0 }}</button>
+                  <button ng-disabled="(number_pages.length <= 1)" type="button" class="button-refresh btn btn-sm btn-info dropdown-toggle" dropdown-toggle>
+                    <i class="caret"></i>
+                  </button>
+                  <ul class="dropdown-menu pull-right">
+                    <li ng-repeat="page in number_pages">
+                      <a ng-click="loadPage(page)">{{ page }}</a>
+                    </li>
+                  </ul>
+                </div>
+                <button ng-disabled="nextbutton" ng-disabled="nextPageDisable" ng-click="loadPage(current_page - 1)" class="btn btn-sm btn-info">
+                  5 siguientes
+                </button>
+                <button ng-disabled="indexbutton" ng-disabled="nextPageDisable" ng-click="loadPage(1)" class="btn btn-sm btn-info">
+                  Inicio
+                </button>
+              </div>
+            </panel-footer>
+        </panel>
+
     </div>
 
-</div> <!-- container-fluid -->
+
+  </div>
+
+</div>    <!-- container-fluid -->

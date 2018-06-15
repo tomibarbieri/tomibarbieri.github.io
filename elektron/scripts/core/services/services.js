@@ -26,6 +26,7 @@ angular
     'use strict';
     return $window.enquire;
   }])
+
   .factory('pinesNotifications', ['$window', function ($window) {
     'use strict';
     return {
@@ -37,6 +38,156 @@ angular
       },
     };
   }])
+
+
+  .factory('LoginService', function($cookies, $http) {
+      'use strict';
+      var admin = 'root';
+      var pass = 'q1w2e3r4';
+      var isAuthenticated = false;
+      var token;
+
+      return {
+        login : function(username, password) {
+          var responsestatus = false;
+          var user = {'username':username, 'password':password};
+          $http({
+              method:'POST',
+              url:'http://158.69.223.78:8000/elektronusers/login',
+              //url:'http://163.10.33.155:8000/elektronusers/login',
+              data: $.param(user),
+              headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+              }
+          }).then(function(response){
+              console.log("todo piola");
+              console.log(response);
+              console.log($cookies);
+              isAuthenticated = (response.status == 200);
+          }, function(response){
+              console.log("no tamo piola");
+              console.log(response);
+              isAuthenticated = (response.status == 200);
+              console.log("problemas de conexion");
+          });
+        },
+        isAuthenticated : function() {
+          return isAuthenticated;
+        },
+        checkToken : function() {
+          return token;
+        },
+        logout : function() {
+          isAuthenticated = false;
+        }
+      };
+    })
+
+    .service('Notifier',['pinesNotifications', function (pinesNotifications) {
+
+      this.simpleInfo = function(title,text) {
+        console.log("notificando");
+        pinesNotifications.notify({
+          title: title,
+          text: text,
+          type: 'info'
+        });
+      };
+
+      this.simpleSuccess = function(title,text) {
+        pinesNotifications.notify({
+          title: title,
+          text: text,
+          type: 'success'
+        });
+      };
+
+      this.simpleError = function(title,text) {
+        pinesNotifications.notify({
+          title: title,
+          text: text,
+          type: 'error'
+        });
+      };
+
+      // this notifications are permanent (can be close with the 'X')
+
+      this.stickyInfo = function() {
+        pinesNotifications.notify({
+          title: 'Sticky Info',
+          text: 'Sticky info, you know, like a newspaper covered in honey.',
+          type: 'info',
+          hide: false
+        });
+      };
+
+      this.stickySuccess = function() {
+        pinesNotifications.notify({
+          title: 'Sticky Success',
+          text: 'Sticky success... I\'m not even gonna make a joke.',
+          type: 'success',
+          hide: false
+        });
+      };
+
+      this.stickyError = function() {
+        pinesNotifications.notify({
+          title: 'Uh Oh!',
+          text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
+          type: 'error',
+          hide: false
+        });
+      };
+
+      this.showDynamic = function() {
+        var percent = 0;
+        var notice = pinesNotifications.notify({
+          title: 'Cargando datos..',
+          type: 'info',
+          icon: 'fa fa-spin fa-refresh',
+          hide: false,
+          closer: false,
+          sticker: false,
+          opacity: 0.75,
+          shadow: false,
+          width: '200px'
+        });
+
+        setTimeout(function() {
+          notice.notify({
+            title: false
+          });
+          var interval = setInterval(function() {
+            percent += 5;
+            var options = {
+              text: percent + '% completado.'
+            };
+            if (percent === 80) {
+              options.title = 'Ya casi';
+            }
+            if (percent >= 100) {
+              window.clearInterval(interval);
+              options.title = 'Listo!';
+              options.type = 'success';
+              options.hide = true;
+              options.closer = true;
+              options.sticker = true;
+              options.icon = 'fa fa-check';
+              options.opacity = 1;
+              options.shadow = true;
+            }
+            notice.notify(options);
+          }, 60);
+        }, 2000);
+      };
+
+    }])
+
+
+
+
+
+
   .factory('$bootbox', ['$modal', '$window', function($modal, $window) {
     'use strict';
     // NOTE: this is a workaround to make BootboxJS somewhat compatible with

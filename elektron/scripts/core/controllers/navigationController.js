@@ -3,7 +3,7 @@ angular
   .controller('NavigationController', ['$scope', '$location', '$timeout', function($scope, $location, $timeout) {
     'use strict';
     $scope.menu = [{
-      label: 'Overview',
+      label: 'Secciones del sistema',
       iconClasses: '',
       separator: true
     }, {
@@ -15,6 +15,10 @@ angular
       iconClasses: 'glyphicon glyphicon-th-large',
       url: '#/components'
     }, {
+      label: 'Monitor',
+      iconClasses: 'glyphicon glyphicon-dashboard',
+      url: '#/monitor'
+    }, {
       label: 'Tareas',
       iconClasses: 'glyphicon glyphicon-list-alt',
       url: '#/tasks'
@@ -23,13 +27,13 @@ angular
       iconClasses: 'glyphicon glyphicon-stats',
       url: '#/statistics'
     }, {
-      label: 'Configuración',
-      iconClasses: 'glyphicon glyphicon-cog',
-      url: '#/index'
+      label: 'Datos históricos',
+      iconClasses: 'glyphicon glyphicon-time',
+      url: '#/history'
     }, {
       label: 'Cerrar sesión',
       iconClasses: 'glyphicon glyphicon-log-out',
-      url: '#/index'
+      url: '#/logout'
     }];
 
 

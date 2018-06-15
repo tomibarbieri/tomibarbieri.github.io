@@ -39,7 +39,7 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
       'zoomInUp'
     ];
 
-    $scope.layoutLoading = true;
+    $scope.layoutLoading = false;
 
     $scope.getLayoutOption = function(key) {
       return $theme.get(key);
@@ -84,11 +84,13 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
 
     $scope.hideHeaderBar = function() {
       $theme.set('headerBarHidden', true);
+      console.log('hideHeaderBar');
     };
 
     $scope.showHeaderBar = function($event) {
       $event.stopPropagation();
       $theme.set('headerBarHidden', false);
+      console.log('showHeaderBar');
     };
 
     $scope.toggleLeftBar = function() {
@@ -106,75 +108,6 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
       $event.stopPropagation();
       $event.preventDefault();
       $theme.set('showSmallSearchBar', !$theme.get('showSmallSearchBar'));
-    };
-
-    $scope.chatters = [{
-      id: 0,
-      status: 'online',
-      avatar: 'potter.png',
-      name: 'Jeremy Potter'
-    }, {
-      id: 1,
-      status: 'online',
-      avatar: 'tennant.png',
-      name: 'David Tennant'
-    }, {
-      id: 2,
-      status: 'online',
-      avatar: 'johansson.png',
-      name: 'Anna Johansson'
-    }, {
-      id: 3,
-      status: 'busy',
-      avatar: 'jackson.png',
-      name: 'Eric Jackson'
-    }, {
-      id: 4,
-      status: 'online',
-      avatar: 'jobs.png',
-      name: 'Howard Jobs'
-    }, {
-      id: 5,
-      status: 'online',
-      avatar: 'potter.png',
-      name: 'Jeremy Potter'
-    }, {
-      id: 6,
-      status: 'away',
-      avatar: 'tennant.png',
-      name: 'David Tennant'
-    }, {
-      id: 7,
-      status: 'away',
-      avatar: 'johansson.png',
-      name: 'Anna Johansson'
-    }, {
-      id: 8,
-      status: 'online',
-      avatar: 'jackson.png',
-      name: 'Eric Jackson'
-    }, {
-      id: 9,
-      status: 'online',
-      avatar: 'jobs.png',
-      name: 'Howard Jobs'
-    }];
-    $scope.currentChatterId = null;
-    $scope.hideChatBox = function() {
-      $theme.set('showChatBox', false);
-    };
-    $scope.toggleChatBox = function(chatter, $event) {
-      $event.preventDefault();
-      if ($scope.currentChatterId === chatter.id) {
-        $theme.set('showChatBox', !$theme.get('showChatBox'));
-      } else {
-        $theme.set('showChatBox', true);
-      }
-      $scope.currentChatterId = chatter.id;
-    };
-
-    $scope.hideChatBox = function() {
-      $theme.set('showChatBox', false);
     };
 
     $scope.$on('themeEvent:maxWidth767', function(event, newVal) {
@@ -223,7 +156,7 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
     }, {
       open: true
     }];
-
+    /*
     $scope.$on('$routeChangeStart', function() {
       if ($location.path() === '') {
         return $location.path('/');
@@ -237,4 +170,5 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
         $scope.layoutLoading = false;
       }
     });
+    */
   }]);
