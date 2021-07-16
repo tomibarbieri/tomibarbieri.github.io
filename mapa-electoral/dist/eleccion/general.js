@@ -105,7 +105,8 @@ function loadTableData() {
     var circuito = new String(circuito.properties.circuito_id);
     var votos_circuito = votos_por_circuito[circuito] 
     // console.log(circuito);
-    text_table += "<tr>" + "<td onclick='print_chart("+circuito+")'>#"+ circuito + "</td>";
+    text_table += "<tr>" + "<td><a onclick='print_chart(\""+circuito+"\")'>#"+ circuito + "</a></td>";
+
     
     votos_por_circuito_listas.forEach(lista => {
       text_table += "<td>"+ votos_circuito[lista] +"</td>";

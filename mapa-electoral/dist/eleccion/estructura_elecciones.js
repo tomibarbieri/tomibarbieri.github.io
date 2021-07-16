@@ -11,14 +11,14 @@ var estructura_elecciones = {
             'interna': {
                 'data': paso2019_intendente_interna,
                 'header': paso2019_intendente_interna_listas,
-                'default_total': paso2019_intendente_interna_listas[paso2019_intendente_interna_listas.length - 1],
+                'default_total': 'votos_totales_fdt',
                 'default_base': paso2019_intendente_interna_listas[0]
             },
             'jxc_vs_fdt' : {
                 'data': paso2019_intendente_jxc_vs_fdt,
                 'header': paso2019_intendente_jxc_vs_fdt_listas,
                 'default_total': paso2019_intendente_jxc_vs_fdt_listas[paso2019_intendente_jxc_vs_fdt_listas.length - 1],
-                'default_base': paso2019_intendente_jxc_vs_fdt_listas[0]
+                'default_base': 'votos_totales_fdt'
             }
         },
         'presidente' : {
