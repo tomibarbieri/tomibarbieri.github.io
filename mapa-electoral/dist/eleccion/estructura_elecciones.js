@@ -12,7 +12,7 @@ var estructura_elecciones = {
                 'data': paso2019_intendente_interna,
                 'header': paso2019_intendente_interna_listas,
                 'default_total': 'votos_totales_fdt',
-                'default_base': paso2019_intendente_interna_listas[0]
+                'default_base': 'votos_florencia'
             },
             'jxc_vs_fdt' : {
                 'data': paso2019_intendente_jxc_vs_fdt,
