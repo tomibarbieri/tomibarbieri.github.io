@@ -241,8 +241,15 @@
                 <div class="d-none card-tools map-title">
                   <ul class="nav nav-pills ml-auto">
                     <li class="nav-item">
-                      <a class="nav-link default"></a>
+                      <a id="scale" class="nav-link default"></a>
                     </li>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                        <i class="fas fa-bars"></i>
+                      </button>
+                      <div id="scale-options" style="max-height: 280px;overflow-y: auto;" class="dropdown-menu" role="menu">
+                      </div>
+                    </div>
                   </ul>
                 </div>
               </div><!-- /.card-header -->

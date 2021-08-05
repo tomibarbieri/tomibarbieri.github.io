@@ -13,8 +13,8 @@ function print_chart(circuito_id) {
 
     var valores_lista = []
     
-    console.log(votos_por_circuito_listas);
-    console.log(votos_circuito);
+    // console.log(votos_por_circuito_listas);
+    // console.log(votos_circuito);
 
     votos_por_circuito_listas.forEach(lista => {
         valores_lista.push(votos_circuito[lista])

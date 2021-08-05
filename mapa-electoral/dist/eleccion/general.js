@@ -1,10 +1,26 @@
-
-
-
 function loadMap(lista_principal, lista_total) {
 
-  $(".map-title a").text("Escala: " + lista_principal + "/" + lista_total);
+  $("#scale").text("Escala: " + lista_principal + "/" + lista_total);
   $(".map-title").removeClass("d-none");
+
+  // create drop menu - scale
+
+  console.log($("#scale-options"));
+  console.log(votos_por_circuito_listas);
+  
+  $("#scale-options").html("")
+  var text_scale_options = "";
+  votos_por_circuito_listas.forEach(lista_izquierda => {
+    votos_por_circuito_listas.forEach(lista_derecha => {
+      text_scale_options += "<a onclick='loadMap(\""+ lista_izquierda +"\",\""+ lista_derecha +"\")' class='dropdown-item'>" + lista_izquierda + "/" + lista_derecha +"</a>"
+    });
+    text_scale_options += '<div class="dropdown-divider"></div>'
+  });
+
+  $("#scale-options").html(text_scale_options)
+
+  // <a onclick="changeScale('list1,list2')" class="dropdown-item">lista_victoria / votos_totales</a>
+  // <div class="dropdown-divider"></div>
 
   $('#map').remove();
   $('#map-container').append('<div id="map" class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: relative; outline: none;"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(16px, 53px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 17; transform: translate3d(-306px, -250px, 0px) scale(2);"></div><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(-306px, -250px, 0px) scale(1);"></div></div></div><div class="leaflet-pane leaflet-shadow-pane"></div><div class="leaflet-pane leaflet-overlay-pane"><svg pointer-events="none" class="leaflet-zoom-animated" width="720" height="480" viewBox="-76 -93 720 480" style="transform: translate3d(-76px, -93px, 0px);"><g><path class="leaflet-interactive" stroke="#000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#ff7800" fill-opacity="0.8" fill-rule="evenodd" d="M293,175a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 "></path><path class="leaflet-interactive" stroke="#000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#ff7800" fill-opacity="0.8" fill-rule="evenodd" d="M311,127a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 "></path><path class="leaflet-interactive" stroke="#000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#ff7800" fill-opacity="0.8" fill-rule="evenodd" d="M333,216a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 "></path><path class="leaflet-interactive" stroke="#000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#ff7800" fill-opacity="0.8" fill-rule="evenodd" d="M337,133a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 "></path><path class="leaflet-interactive" stroke="#000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#ff7800" fill-opacity="0.8" fill-rule="evenodd" d="M369,166a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 "></path><path class="leaflet-interactive" stroke="#000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#ff7800" fill-opacity="0.8" fill-rule="evenodd" d="M392,234a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 "></path><path class="leaflet-interactive" stroke="#000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#ff7800" fill-opacity="0.8" fill-rule="evenodd" d="M0 0"></path><path class="leaflet-interactive" stroke="#999" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#B0DE5C" fill-opacity="0.8" fill-rule="evenodd" d="M249 172L216 189L175 228L160 239L184 271L211 274L288 274L292 272L297 254L291 241L288 227L288 213L285 202L278 190zM257 229L264 241L274 235L266 224zM190 285L190 297L220 295L279 298L295 297L295 286L237 285z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M260 73L290 103"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M320 135L452 267"></path></g></svg></div><div class="leaflet-pane leaflet-marker-pane"></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(873798px, 1.59169e+06px, 0px) scale(8192);"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="https://leafletjs.com/examples/geojson/example.html#" title="Zoom in" role="button" aria-label="Zoom in">+</a><a class="leaflet-control-zoom-out" href="https://leafletjs.com/examples/geojson/example.html#" title="Zoom out" role="button" aria-label="Zoom out">−</a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"> </div></div></div></div>');
@@ -19,7 +35,6 @@ function loadMap(lista_principal, lista_total) {
     zoomOffset: -1,
   }).addTo(map);
 
-    /*Legend specific*/
   var legend = L.control({ position: "bottomleft" });
 
   legend.onAdd = function(map) {
