@@ -12,7 +12,9 @@ function loadMap(lista_principal, lista_total) {
   var text_scale_options = "";
   votos_por_circuito_listas.forEach(lista_izquierda => {
     votos_por_circuito_listas.forEach(lista_derecha => {
-      text_scale_options += "<a onclick='loadMap(\""+ lista_izquierda +"\",\""+ lista_derecha +"\")' class='dropdown-item'>" + lista_izquierda + "/" + lista_derecha +"</a>"
+      if (lista_izquierda != lista_derecha) {
+        text_scale_options += "<a onclick='loadMap(\""+ lista_izquierda +"\",\""+ lista_derecha +"\")' class='dropdown-item'>" + lista_izquierda + "/" + lista_derecha +"</a>"
+      }
     });
     text_scale_options += '<div class="dropdown-divider"></div>'
   });
@@ -76,7 +78,8 @@ function loadMap(lista_principal, lista_total) {
       var circuito = new String(layer.feature.properties.circuito_id);
       var votos_circuito = votos_por_circuito[circuito]
 
-      var text = "<b>Circuito: - " + circuito + "</b><br>"; 
+      var text = "<b>Circuito: - " + circuito + "</b><br><br>" 
+               + "<b>Escala: </b>" + parseFloat(votos_circuito[lista_principal]/votos_circuito[lista_total]*100).toFixed(2) + "%<br><br>"; 
 
       votos_por_circuito_listas.forEach(lista => {
   
@@ -85,12 +88,27 @@ function loadMap(lista_principal, lista_total) {
 
       });
 
-      text += "<button onclick='print_chart(\""+ circuito +"\")'>Ver gráfico</button>";
+      text += "<br><button onclick='print_chart(\""+ circuito +"\")'>Ver gráfico</button>";
       return text;
 
   }).addTo(map);
     
 };
+
+function printMap() {
+  var map = L.mapbox.map('map', 'map').setView([-34.92146635625465, -57.95416796413031], 10);
+  leafletImage(map, function(err, canvas) {
+      // now you have canvas
+      // example thing to do with that canvas:
+      var img = document.createElement('img');
+      var dimensions = map.getSize();
+      img.width = dimensions.x;
+      img.height = dimensions.y;
+      img.src = canvas.toDataURL();
+      document.getElementById('images').innerHTML = '';
+      document.getElementById('images').appendChild(img);
+  });
+}
 
 function loadTableData() {
 
@@ -152,6 +170,8 @@ $( document ).ready(function() {
   loadMap("votos_totales_fdt", "votos_totales");
   loadTableData();
   print_chart("0497A");
+
+  // $("#printMap").click(function(){ printMap(); });
 
 });
 

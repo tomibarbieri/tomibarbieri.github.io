@@ -42,6 +42,7 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
    crossorigin=""></script>
+  <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.4/leaflet-image.js'></script>
 
   <style> 
   		#map {
@@ -89,7 +90,7 @@
                 <button class="btn btn-navbar" type="submit">
                   <i class="fas fa-search"></i>
                 </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                <button class="btn" type="button">
                   <i class="fas fa-times"></i>
                 </button>
               </div>
@@ -250,6 +251,11 @@
                       <div id="scale-options" style="max-height: 280px;overflow-y: auto;" class="dropdown-menu" role="menu">
                       </div>
                     </div>
+                    <li class="nav-item">
+                      <!-- <button id="printMap" type="button" class="btn btn-light btn-sm" data-toggle="dropdown" data-offset="-52">
+                        <i class="fas fa-print"></i>
+                      </button> -->
+                    </li>
                   </ul>
                 </div>
               </div><!-- /.card-header -->
